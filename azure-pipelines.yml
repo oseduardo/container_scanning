@@ -12,12 +12,12 @@ pool:
 steps:
 - script:
     echo "[INFO - Installing Docker CLI...]"
-  displayName: 'Docker Image'
+  displayName: 'Docker CLI Install'
 - task: DockerInstaller@0
   inputs:
     dockerVersion: '17.09.0-ce'
 
 - script: |
-    echo "[INFO - Testing Docker CLI...]"
-    docker --version
-  displayName: 'Testing Docker CLI'
+    echo "[INFO - Pulling Docker Image...]"
+    docker pull alpine:3.13.5
+  displayName: 'Pull Docker Image'
