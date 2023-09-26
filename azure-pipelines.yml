@@ -30,3 +30,13 @@ steps:
       export SRCCLR_API_TOKEN="$(SRCCLR_API_TOKEN)"
       export SRCCLR_WORKSPACE_SLUG=900tQpQ
       curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --image centos:7
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      curl -fsS https://tools.veracode.com/veracode-cli/install | sh
+      export VERACODE_API_KEY_ID=$(vid)
+      export VERACODE_API_KEY_SECRET=$(vkey)
+      ./veracode scan --type image --source juliantotzek/verademo:latest -o Verademo.json
+      ls -al
