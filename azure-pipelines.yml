@@ -19,7 +19,7 @@ stages:
     steps:
 
     - task: Bash@3
-      displayName: Veracode Container Security
+      displayName: Veracode Container Security - Scan
       inputs:
         targetType: 'inline'
         script: |
@@ -27,5 +27,22 @@ stages:
           export VERACODE_API_KEY_ID=$(VID)
           export VERACODE_API_KEY_SECRET=$(VKEY)
           ./veracode scan --type repo --source https://github.com/bridgecrewio/terragoat -o terragoat.json
-          ls -al
-          cat terragoat.json
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: 'terragoat.json'
+        ArtifactName: 'terragoat.json'
+        publishLocation: 'Container'
+
+    - task: Bash@3
+      displayName: 'Veracode Container Security - Policy Check'
+      inputs:
+        targetType: 'inline'
+        script: |
+          PASS=$(jq -r '."policy-passed"' terragoat.json)
+          echo "Passed policy: $PASS"
+          if $PASS; then
+            exit 0
+          else
+            exit 1
+          fi
