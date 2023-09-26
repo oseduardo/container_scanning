@@ -26,6 +26,6 @@ stages:
           curl -fsS https://tools.veracode.com/veracode-cli/install | sh
           export VERACODE_API_KEY_ID=$(VID)
           export VERACODE_API_KEY_SECRET=$(VKEY)
-          ./veracode scan --type image --source https://github.com/bridgecrewio/terragoat -o terragoat.json
+          ./veracode scan --type repo --source https://github.com/bridgecrewio/terragoat -o terragoat.json
           ls -al
           cat terragoat.json
