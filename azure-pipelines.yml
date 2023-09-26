@@ -9,17 +9,23 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script:
-    echo "[INFO - Running Veracode Container Security...]"
-  displayName: 'Veracode Container Security'
+stages:
 
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: |
-      curl -fsS https://tools.veracode.com/veracode-cli/install | sh
-      export VERACODE_API_KEY_ID=$(vid)
-      export VERACODE_API_KEY_SECRET=$(vkey)
-      ./veracode scan --type image --source juliantotzek/verademo:latest -o Verademo.json
-      ls -al
+- stage: Veracode
+
+  jobs:
+  - job: Build
+
+    steps:
+
+    - task: Bash@3
+      displayName: Veracode Container Security
+      inputs:
+        targetType: 'inline'
+        script: |
+          curl -fsS https://tools.veracode.com/veracode-cli/install | sh
+          export VERACODE_API_KEY_ID=$(VID)
+          export VERACODE_API_KEY_SECRET=$(VKEY)
+          ./veracode scan --type image --source https://github.com/bridgecrewio/terragoat -o terragoat.json
+          ls -al
+          cat terragoat.json
