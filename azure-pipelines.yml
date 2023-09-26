@@ -11,25 +11,8 @@ pool:
 
 steps:
 - script:
-    echo "[INFO - Installing Docker CLI...]"
-  displayName: 'Docker CLI Install'
-- task: DockerInstaller@0
-  inputs:
-    dockerVersion: '17.09.0-ce'
-
-- script: |
-    echo "[INFO - Pulling Docker Image...]"
-    docker pull centos:7
-  displayName: 'Pull Docker Image'
-
-- task: CmdLine@2
-  displayName: SCA - Container Scan
-  inputs:
-    script: |
-      export SRCCLR_PROJECT_NAME=CentOS7
-      export SRCCLR_API_TOKEN="$(SRCCLR_API_TOKEN)"
-      export SRCCLR_WORKSPACE_SLUG=900tQpQ
-      curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --image centos:7
+    echo "[INFO - Running Veracode Container Security...]"
+  displayName: 'Veracode Container Security'
 
 - task: Bash@3
   inputs:
